@@ -1,22 +1,21 @@
 
 ![Logo](https://github.com/MikaelJG/noti/blob/master/assets/)
 
-Written in Lua, Medusa is an upcoming game, playable on LOVE2D. A prototype of the game is scheduled for the end of February. 
+Simple boilerplate for LOVE2D, including small script in lua. 
 
 ## Installation
 
 Install Love2D
-
 ```bash
 $ # to come
 ```
-Install Medusa.
+Install the boilerplate
 ```bash
-$ git clone git@github.com:MikaelJG/medusa.git
+$ git clone git@github.com:MikaelJG/boiled_love.git
 ```
-Move in the project's root, in the Medusa folder.
+Move in the project's root
 ```bash
-$ cd medusa/ 
+$ cd boiled_love/ 
 ```
 Start the game.
 ```bash
