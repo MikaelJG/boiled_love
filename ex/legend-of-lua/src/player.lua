@@ -1,4 +1,4 @@
-player = world:newBSGRectangleCollider(234, 184, 12, 12, 3)
+/layer = world:newBSGRectangleCollider(234, 184, 12, 12, 3)
 player.x = 0
 player.y = 0
 player.dir = "down"
