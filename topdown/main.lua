@@ -114,13 +114,13 @@ function love.update(dt)
 
   if love.keyboard.isDown("space") then
     -- getRadianRotation(player.dir)
-    attack.anim:gotoFrame(1)
+    -- attack.anim:gotoFrame(1)
     attack.anim:update(dt)
     isAttack = true
   end
 
   if isAttack == false then
-    attack.anim:gotoFrame(3)
+    attack.anim:gotoFrame(4)
   end
 
   if isMoving == false then
@@ -128,42 +128,49 @@ function love.update(dt)
   end
 
  -- bat move
- for i = 1, #bats do
-  if bats[i].x < player.x then
-    bats[i].x = bats[i].x + 0.3
-  end
+ for i = #bats, 1, -1 do
+  if bats[i].life <= 0 then
+    table.remove(bats, i)
+  else
+    if bats[i].x < player.x then
+      bats[i].x = bats[i].x + 0.3
+    end
 
-  if bats[i].y < player.y then
-    bats[i].y = bats[i].y + 0.3
-  end
+    if bats[i].y < player.y then
+      bats[i].y = bats[i].y + 0.3
+    end
 
-  if bats[i].x > player.x then
-    bats[i].x = bats[i].x - 0.3
-  end
+    if bats[i].x > player.x then
+      bats[i].x = bats[i].x - 0.3
+    end
 
-  if bats[i].y > player.y then
-    bats[i].y = bats[i].y - 0.3
+    if bats[i].y > player.y then
+      bats[i].y = bats[i].y - 0.3
+    end
   end
 end
 
 -- knock back
 for i = 1, #bats do
-  local bat = bats[i]
-    if bat.x < player.x + 35 and bat.x > player.x - 35 and bat.y < player.y + 35 and bat.y > player.y - 35 then
+    if bats[i].x < player.x + 35 and bats[i].x > player.x - 35 and bats[i].y < player.y + 35 and bats[i].y > player.y - 35 then
       if love.keyboard.isDown("space") then
         if player.dir == "left" then
-          bat.x = bat.x - 100
+          bats[i].x = bats[i].x - 100
+          bats[i].life = bats[i].life - 1
         elseif player.dir == "down" then
-          bat.y = player.y + 100
+          bats[i].y = player.y + 100
+          bats[i].life = bats[i].life - 1
         elseif player.dir == "up" then
-          bat.y = player.y - 100
+          bats[i].y = player.y - 100
+          bats[i].life = bats[i].life - 1
         elseif player.dir == "right" then
-          bat.x = bat.x + 100
+          bats[i].x = bats[i].x + 100
+          bats[i].life = bats[i].life - 1
         end
         attack.anim:draw(attack.spriteSheet, player.x + 30, player.y, getRadianRotation(player.dir), 2, 2)
       end
     else
-      bat.spriteSheet = love.graphics.newImage("sprites/bat-spritesheet.png")
+      bats[i].spriteSheet = love.graphics.newImage("sprites/bat-spritesheet.png")
     end
 end
 
@@ -201,6 +208,11 @@ function love.draw()
                 -- BAT
                 for i = 1, #bats do
                   bats[i].anim:draw(bats[i].spriteSheet, bats[i].x, bats[i].y, nil, 2, 2)
+                end
+
+                for i = 1, #bats do
+                  love.graphics.rectangle("fill", bats[i].x, bats[i].y - 20, bats[i].life, 2)
+                  -- love.graphics.print(bats[i].life, bats[i].x, bats[i].y - 20)
                 end
 
                 -- PLAYER
@@ -249,6 +261,7 @@ function love.draw()
                 love.graphics.setColor(255, 255, 255)
                 love.graphics.printf(text, 0, 10, love.graphics.getWidth(), "center")
                 love.graphics.print("Life: " .. player.life, 10, 10)
+                love.graphics.print("Bat: " .. #bats, love.graphics.getWidth() - 100, 10)
             end
 
 end
